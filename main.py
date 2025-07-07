@@ -1,9 +1,31 @@
-import shutil
 import os
+
+
+def create():
+    name = input("Enter a name for the list: ")
+    createToDo(name)
+    action = input("Select an action:\n1 - Create a ToDo\n2 - Modify ToDo\n3 - Delete ToDo list\n4 - Exit")
+    modifyToDo(name, action)
+
+
+def modify(name):
+    if name != '':
+        pass
+    else:
+        name = input("Enter a name of the list that you will be modyfing : ")
+    with open(f'{name}.txt', 'r') as f:
+        content = f.read()
+    print(content)
+    action = input(
+        "Select an action:\n1 - Create a ToDo\n2 - Modify ToDo\n3 - Complete a ToDo \n4 - Delete a ToDo\n 5 - Exit")
+    modifyToDo(name, action)
+    modify(name)
+
 
 def createToDo(name):
     with open(f'{name}.txt', 'a') as f:
         f.write(f"")
+
 
 def is_file_empty(file_path):
     return os.path.getsize(file_path) == 0
@@ -15,7 +37,7 @@ def replace_first_char_in_line(name, line_number, new_first_char):
             lines = file.readlines()
 
         if line_number < 1 or line_number > len(lines):
-            print(f"Ошибка: В файле только {len(lines)} строк")
+            print(f"Error: There is only {len(lines)} lines")
             return False
 
         line = lines[line_number - 1]
@@ -32,27 +54,36 @@ def replace_first_char_in_line(name, line_number, new_first_char):
         return True
 
     except Exception as e:
-        print(f"Произошла ошибка: {str(e)}")
+        print(f"Error: {str(e)}")
         return False
 
 
 def modifyToDo(name, action):
     if action == "1":
-        tname = input("Enter a content for a ToDo : ")
+        content = input("Enter a content for a ToDo : ")
         with open(f'{name}.txt', 'a') as f:
-                f.write(f"❌ - {tname}\n")
+                f.write(f"❌ - {content}\n")
     if action == "2":
         with open(f'{name}.txt', 'r') as f:
-            content = f.read()
             line_number = int(input("Select a line for editing : "))
             new_content = input("Enter a new content : ")
             replace_line(name, line_number, f'❌ - {new_content}')
     if action == "3":
         with open(f'{name}.txt', 'r') as f:
-            content = f.read()
-            lines = f.readlines()
             line_number = int(input("Select a line to complete : "))
             replace_first_char_in_line(name, line_number, "✅")
+    if action == "4":
+        with open(f'{name}.txt', 'r') as f:
+            lines = f.readlines()
+            line_number = int(input("Select a line to delete : "))
+        lines.pop(line_number - 1)
+        with open(f'{name}.txt', 'w') as f:
+            f.writelines(lines)
+    if action == "5":
+        exit()
+    else:
+        print("\nInvalid choice\n")
+        return
 
 
 def replace_line(name, line_number, new_content):
@@ -70,39 +101,29 @@ def replace_line(name, line_number, new_content):
         return False
 
 
+def menu():
+    action = input("Select an action:\n1 - Create a ToDo list\n2 - Open/modify an existing ToDo list\n3 - Exit\n")
+    if action == "1":
+        create()
+    if action == "2":
+        modify(name='')
+    if action == "3":
+        exit()
+    else:
+        print("\nInvalid choice\n")
+        return
+
 version = "1.0"
-print("""
-TTTTTTTTTTTTTTTTTTTTTTT              DDDDDDDDDDDDD
-T:::::::::::::::::::::T              D::::::::::::DDD
-T:::::::::::::::::::::T              D:::::::::::::::DD
-T:::::TT:::::::TT:::::T              DDD:::::DDDDD:::::D
-TTTTTT  T:::::T  TTTTTTooooooooooo     D:::::D    D:::::D    ooooooooooo
-        T:::::T      oo:::::::::::oo   D:::::D     D:::::D oo:::::::::::oo
-        T:::::T     o:::::::::::::::o  D:::::D     D:::::Do:::::::::::::::o
-        T:::::T     o:::::ooooo:::::o  D:::::D     D:::::Do:::::ooooo:::::o
-        T:::::T     o::::o     o::::o  D:::::D     D:::::Do::::o     o::::o
-        T:::::T     o::::o     o::::o  D:::::D     D:::::Do::::o     o::::o
-        T:::::T     o::::o     o::::o  D:::::D     D:::::Do::::o     o::::o
-        T:::::T     o::::o     o::::o  D:::::D    D:::::D o::::o     o::::o
-      TT:::::::TT   o:::::ooooo:::::oDDD:::::DDDDD:::::D  o:::::ooooo:::::o
-      T:::::::::T   o:::::::::::::::oD:::::::::::::::DD   o:::::::::::::::o
-      T:::::::::T    oo:::::::::::oo D::::::::::::DDD      oo:::::::::::oo
-      TTTTTTTTTTT      ooooooooooo   DDDDDDDDDDDDD           ooooooooooo\n""", version)
+
+print(f"""
+████████╗ ██████╗ ██████╗  ██████╗ 
+╚══██╔══╝██╔═══██╗██╔══██╗██╔═══██╗
+   ██║   ██║   ██║██║  ██║██║   ██║
+   ██║   ██║   ██║██║  ██║██║   ██║
+   ██║   ╚██████╔╝██████╔╝╚██████╔╝
+   ╚═╝    ╚═════╝ ╚═════╝  ╚═════╝ 
+                                   \n""", version)
 print(f"https://github.com/worthyworm/ToDo")
+
 while True:
-    c = input("Select an action:\n1 - Create a ToDo list\n2 - Open/modify an existing ToDo list\n3 - Exit\n")
-    if c == "1":
-        name = input("Enter a name for the list: ")
-        createToDo(name)
-        action = input("Select an action:\n1 - Create a ToDo\n2 - Modify ToDo\n3 - Delete ToDo list\n4 - Exit")
-        modifyToDo(name, action)
-    if c == "2":
-        name = input("Enter a name of the list that you will be modyfing : ")
-        with open(f'{name}.txt', 'r') as f:
-            content = f.read()
-        print(content)
-        action = input("Select an action:\n1 - Create a ToDo\n2 - Modify ToDo\n3 - Complete a ToDo \n4 - Delete a ToDo list\n 5 - Exit")
-        modifyToDo(name, action)
-
-
-
+    menu()
