@@ -17,7 +17,7 @@ def modify(name):
         content = f.read()
     print(content)
     action = input(
-        "Select an action:\n1 - Create a ToDo\n2 - Modify ToDo\n3 - Complete a ToDo \n4 - Delete a ToDo\n 5 - Exit")
+        "Select an action:\n1 - Create a ToDo\n2 - Modify ToDo\n3 - Complete a ToDo \n4 - Delete a ToDo\n5 - Exit\n")
     modifyToDo(name, action)
     modify(name)
 
@@ -82,7 +82,6 @@ def modifyToDo(name, action):
     if action == "5":
         exit()
     else:
-        print("\nInvalid choice\n")
         return
 
 
@@ -110,7 +109,6 @@ def menu():
     if action == "3":
         exit()
     else:
-        print("\nInvalid choice\n")
         return
 
 version = "1.0"
